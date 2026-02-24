@@ -1,12 +1,10 @@
 {
   "name": "deslop",
+  "description": "Marketplace for the deslop AI code slop scanner plugin",
   "owner": { "name": "Zafar Mahmood" },
   "plugins": [{
     "name": "deslop",
-    "source": {
-      "source": "github",
-      "repo": "zaffnet/deslop.it"
-    },
-    "description": "Scan Python code for AI-generated bloat across 6 categories"
+    "description": "Scan Python code for AI-generated bloat across 6 categories",
+    "source": "./"
   }]
 }
