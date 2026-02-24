@@ -1,0 +1,10 @@
+{
+  "name": "deslop",
+  "description": "Scan Python code for AI-generated bloat (slop) across 6 categories with weighted scoring and auto-fix",
+  "version": "1.0.0",
+  "author": { "name": "Zafar Mahmood" },
+  "homepage": "https://deslop.it",
+  "repository": "https://github.com/zaffnet/deslop.it",
+  "license": "MIT",
+  "keywords": ["code-quality", "ai-slop", "python", "linting", "deslop"]
+}

@@ -1,0 +1,440 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="deslop.it — Clean AI Code Slop"
+  description="A Claude Code plugin that scans Python code for AI-generated bloat across 6 categories with weighted scoring and auto-fix."
+>
+  <!-- Hero -->
+  <header class="hero">
+    <h1>deslop.it</h1>
+    <p class="tagline">
+      Detect and remove AI-generated code bloat.<br />
+      A <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> plugin
+      for Python.
+    </p>
+    <div class="copyable" data-copy="claude plugin add zaffnet/deslop.it">
+      <pre><code>claude plugin add zaffnet/deslop.it</code></pre>
+      <span class="copy-hint">Copied!</span>
+    </div>
+  </header>
+
+  <!-- What is AI Code Slop? -->
+  <section>
+    <h2>What is AI Code Slop?</h2>
+    <p>
+      When AI assistants generate code, they tend to over-defend, over-abstract,
+      and over-document. The result is bloated code that's harder to read,
+      review, and maintain. We call this <strong>slop</strong>
+      — code that compiles and works, but adds no value. It accumulates quietly and
+      inflates your codebase.
+    </p>
+  </section>
+
+  <!-- Prevent It -->
+  <section>
+    <h2>Prevent It</h2>
+    <p>Tips for keeping AI-generated code clean from the start:</p>
+    <ul class="tips">
+      <li>
+        Start prompts with <strong>"Keep it minimal"</strong> or <strong
+          >"No unnecessary abstractions"</strong
+        > — LLMs follow style cues, and a single line of guidance dramatically reduces
+        boilerplate.
+      </li>
+      <li>
+        Provide existing code as context. AI matches the style it sees — if your
+        codebase is lean, the output will be too.
+      </li>
+      <li>
+        Ask for <strong>just the function</strong>, not a full module. The more
+        scope you give, the more scaffolding gets invented.
+      </li>
+      <li>
+        Reject the first draft's error handling. AI defaults to catching every
+        conceivable exception. Delete guards you can't trigger with a test.
+      </li>
+      <li>
+        Refuse one-caller helpers. If a generated function is called exactly
+        once, inline it. Abstractions earn their keep through reuse.
+      </li>
+      <li>
+        Delete AI-generated comments that restate the code. <code
+          ># Increment counter</code
+        >
+        above <code>counter += 1</code> is noise, not documentation.
+      </li>
+      <li>
+        Set a <a href="https://docs.anthropic.com/en/docs/claude-code/settings"
+          >CLAUDE.md</a
+        >
+        file in your repo with style rules — Claude Code reads it on every invocation,
+        so your preferences persist without repeating yourself.
+      </li>
+    </ul>
+  </section>
+
+  <!-- The 6 Categories -->
+  <section>
+    <h2>The 6 Categories</h2>
+    <p>deslop scans for slop across six weighted categories:</p>
+    <table class="categories-table">
+      <thead>
+        <tr>
+          <th class="col-cat">#</th>
+          <th>Category</th>
+          <th class="col-weight">Weight</th>
+          <th class="col-desc">What it catches</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Over-Defensive Code</td>
+          <td>1.0x</td>
+          <td>Unreachable <code>None</code> guards, impossible <code>except</code> blocks, redundant <code>isinstance</code>, silent swallows</td>
+        </tr>
+        <tr class="high">
+          <td>2</td>
+          <td>Premature Abstraction</td>
+          <td><span class="weight-badge">1.5x</span></td>
+          <td>One-caller helpers, transparent wrappers, configuration mirages, lonely enums</td>
+        </tr>
+        <tr class="high">
+          <td>3</td>
+          <td>Dead Weight</td>
+          <td><span class="weight-badge">1.5x</span></td>
+          <td>Unused params, once-used constants, zero-caller functions, pre-computed state</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Verbose Patterns</td>
+          <td>1.0x</td>
+          <td>Boolean long-hand, manual list builds, concatenation chains, deep nesting</td>
+        </tr>
+        <tr class="high">
+          <td>5</td>
+          <td>Structural Bloat</td>
+          <td><span class="weight-badge">1.5x</span></td>
+          <td>Delegation chains, symmetry addiction, gratuitous generics, repetitive structures</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Doc &amp; Logging Noise</td>
+          <td>1.0x</td>
+          <td>Restating comments, signature-echoing docstrings, redundant logging</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Install -->
+  <section>
+    <h2>Install the Plugin</h2>
+    <ol class="steps">
+      <li>
+        <p>Install the plugin:</p>
+        <div class="copyable" data-copy="claude plugin add zaffnet/deslop.it">
+          <pre><code>claude plugin add zaffnet/deslop.it</code></pre>
+          <span class="copy-hint">Copied!</span>
+        </div>
+      </li>
+      <li>
+        <p>Open any Python project and run:</p>
+        <div class="copyable" data-copy="/deslop">
+          <pre><code>/deslop</code></pre>
+          <span class="copy-hint">Copied!</span>
+        </div>
+      </li>
+      <li>
+        <p>Or target a specific directory:</p>
+        <div class="copyable" data-copy="/deslop src/mypackage">
+          <pre><code>/deslop src/mypackage</code></pre>
+          <span class="copy-hint">Copied!</span>
+        </div>
+      </li>
+    </ol>
+    <p>
+      The plugin scans all Python files, calculates a weighted slop density
+      score, and offers to auto-fix findings — all within Claude Code.
+    </p>
+  </section>
+
+  <!-- Scoring -->
+  <section>
+    <h2>Scoring</h2>
+    <p>
+      Each finding is weighted by category. Structural issues (Categories 2, 3,
+      5) carry
+      <strong>1.5x weight</strong> because they cause more long-term harm than surface
+      verbosity.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Slop Density</th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0–5%</td><td>Excellent — minimal slop</td></tr>
+        <tr><td>5–15%</td><td>Good — minor cleanup possible</td></tr>
+        <tr><td>15–30%</td><td>Needs work — significant bloat</td></tr>
+        <tr><td>30%+</td><td>Heavy slop — major cleanup needed</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Developer -->
+  <footer>
+    <p>
+      Built by <a href="https://zafarmahmood.com">Zafar Mahmood</a>
+    </p>
+  </footer>
+</Layout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 3rem;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .tagline {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .hero .copyable {
+    max-width: fit-content;
+    margin: 0 auto;
+  }
+
+  .hero pre {
+    text-align: left;
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 {
+      font-size: 2.25rem;
+    }
+
+    .hero pre,
+    .steps pre {
+      font-size: 0.72rem;
+      padding: 0.75rem;
+    }
+
+    .steps {
+      padding-left: 1rem;
+    }
+  }
+
+  section {
+    margin-bottom: 3.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  section > p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .tips {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tips li {
+    padding: 0.75rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .tips li:last-child {
+    border-bottom: none;
+  }
+
+  .tips li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-muted);
+  }
+
+  .categories-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .categories-table th,
+  .categories-table td {
+    text-align: left;
+    padding: 0.75rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .categories-table th {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .categories-table td:first-child {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: center;
+    width: 2rem;
+  }
+
+  .categories-table td:nth-child(2) {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .col-weight {
+    text-align: center !important;
+    width: 4rem;
+  }
+
+  .categories-table td:nth-child(3) {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .categories-table td:nth-child(4) {
+    color: var(--color-text-muted);
+  }
+
+  .weight-badge {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .categories-table tr.high td:nth-child(2) {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .col-desc {
+      display: none;
+    }
+
+    .categories-table td:nth-child(4) {
+      display: none;
+    }
+
+    .categories-table td:nth-child(2) {
+      white-space: normal;
+    }
+  }
+
+  .steps {
+    padding-left: 1.25rem;
+  }
+
+  .steps li {
+    margin-bottom: 1.25rem;
+  }
+
+  .steps li p {
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.925rem;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .copyable {
+    cursor: pointer;
+  }
+
+  .copyable pre {
+    transition: border-color 0.15s;
+  }
+
+  .copyable:hover pre {
+    border-color: var(--color-accent);
+  }
+
+  .copy-hint {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    text-align: right;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .copyable.copied .copy-hint {
+    opacity: 1;
+  }
+</style>
+
+<script is:inline>
+  document.querySelectorAll('.copyable').forEach(el => {
+    el.addEventListener('click', () => {
+      navigator.clipboard.writeText(el.dataset.copy).then(() => {
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 1200);
+      });
+    });
+  });
+</script>

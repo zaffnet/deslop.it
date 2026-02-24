@@ -1,0 +1,12 @@
+{
+  "name": "deslop",
+  "owner": { "name": "Zafar Mahmood" },
+  "plugins": [{
+    "name": "deslop",
+    "source": {
+      "source": "github",
+      "repo": "zaffnet/deslop.it"
+    },
+    "description": "Scan Python code for AI-generated bloat across 6 categories"
+  }]
+}
