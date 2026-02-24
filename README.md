@@ -12,7 +12,8 @@ A Claude Code plugin that scans Python code for AI-generated bloat ("slop") acro
 ## Install
 
 ```bash
-claude plugin add zaffnet/deslop.it
+claude plugin marketplace add zaffnet/deslop.it
+claude plugin install deslop@deslop
 ```
 
 ## Usage

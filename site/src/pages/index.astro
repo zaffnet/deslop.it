@@ -14,8 +14,9 @@ import Layout from "../layouts/Layout.astro";
       A <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> plugin
       for Python.
     </p>
-    <div class="copyable" data-copy="claude plugin add zaffnet/deslop.it">
-      <pre><code>claude plugin add zaffnet/deslop.it</code></pre>
+    <div class="copyable" data-copy="claude plugin marketplace add zaffnet/deslop.it && claude plugin install deslop@deslop">
+      <pre><code>claude plugin marketplace add zaffnet/deslop.it
+claude plugin install deslop@deslop</code></pre>
       <span class="copy-hint">Copied!</span>
     </div>
   </header>
@@ -134,9 +135,16 @@ import Layout from "../layouts/Layout.astro";
     <h2>Install the Plugin</h2>
     <ol class="steps">
       <li>
+        <p>Add the marketplace:</p>
+        <div class="copyable" data-copy="claude plugin marketplace add zaffnet/deslop.it">
+          <pre><code>claude plugin marketplace add zaffnet/deslop.it</code></pre>
+          <span class="copy-hint">Copied!</span>
+        </div>
+      </li>
+      <li>
         <p>Install the plugin:</p>
-        <div class="copyable" data-copy="claude plugin add zaffnet/deslop.it">
-          <pre><code>claude plugin add zaffnet/deslop.it</code></pre>
+        <div class="copyable" data-copy="claude plugin install deslop@deslop">
+          <pre><code>claude plugin install deslop@deslop</code></pre>
           <span class="copy-hint">Copied!</span>
         </div>
       </li>
